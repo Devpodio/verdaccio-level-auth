@@ -1,4 +1,4 @@
-import Level from './src/level';
+import Level from './level';
 
 /**
  * A new instance of Level class.
