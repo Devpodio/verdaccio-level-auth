@@ -4,81 +4,73 @@ import crypto from 'crypto';
 export default class Db {
   constructor(dbFile) {
     this.dbFile = dbFile;
-    this.isClose = true;
   }
-
-  _initDb(){
-    if(this.isClose) {
-      this.db = level(this.dbFile);
-      this.isClose = false;
-    }
+  _openDb(){
+    return level(this.dbFile);
   }
-
-  async _closeDb(){
-    await this.db.close();
-    this.isClose = true;
+  async _closeDb(db){
+    await db.close();
   }
 
   _enc(str){
     return crypto.createHash('sha256').update(str,'utf8').digest('hex');
   }
-  async _exists(key) {
+  async _exists(db,key) {
     let has = false;
     try{
-      this._initDb();
-      await this.db.get(key);
+      await db.get(key);
       has = true;
     }catch(e){
       if(e instanceof level.errors.NotFoundError){
         has = false;
       }
-    }finally{
-      await this._closeDb();
     }
     return has;
   }
-  async get(key,def=0) {
+  async _get(db,key,def) {
     const exists = await this._exists(key);
-    if(!exists) {
-      await this.db.put(key,def);
+    if(exists) {
+      return db.get(key);
     }
-    return this.db.get(key);
+    if(!exists && def) {
+      await db.put(key,def);
+      return def;
+    }
+    return false;
   }
-  async _addCount(){
-    this._initDb();
-    const count = await this.get('user_count',0);
-    await this.db.put('user_count',count+1);
-    await this._closeDb();
+  async _addCount(db){
+    const count = await this._get(db,'user_count',0);
+    await db.put('user_count',count+1);
   }
   async getCount(){
-    this._initDb();
-    const count = await this.get('user_count',0);
-    await this._closeDb();
+    const db = this._openDb();
+    const count = await this._get(db,'user_count',0);
+    await this._closeDb(db);
     return count;
   }
   async getUser(username) {
-    this._initDb();
-    const exists = await this._exists(username);
+    const db = this._openDb();
+    const exists = await this._exists(db,username);
     if(!exists) {
-      await this._closeDb();
+      await this._closeDb(db);
       return false;
     }
-    const user = await this.db.get(username);
-    await this._closeDb();
+    const user = await this._get(db,username);
+    await this._closeDb(db);
     return user;
   }
   async addUser(username,password){
-    this._initDb();
+    const db = this._openDb();
     const encPw = this._enc(password);
-    await this.db.put(username,encPw);
-    await this._addCount();
-    await this._closeDb();
+    await db.put(username,encPw);
+    await this._addCount(db);
+    await this._closeDb(db);
   }
 
   async verifyUser(username,password) {
-    this._initDb();
-    const hash = await this.db.get(username);
-    await this._closeDb();
+    const db = this._openDb();
+    const hash = await this._get(db,username);
+    await this._closeDb(db);
     if(!hash){
       return false;
     }

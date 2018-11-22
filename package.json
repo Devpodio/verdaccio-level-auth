@@ -1,5 +1,5 @@
 {
-  "name": "@devpodio/verdaccio-level-auth",
+  "name": "verdaccio-level-auth",
   "version": "1.0.8",
   "description": "A verdaccio plugin that uses level(a LevelDB wrapper) to store and authenticate user credentials",
   "main": "lib/index.js",
