@@ -4,7 +4,7 @@ import crypto from 'crypto';
 export default class Db {
   constructor(dbFile,logger) {
     this.dbFile = dbFile;
-    this.logger = logger
+    this.logger = logger;
   }
   _openDb(){
     this.logger.info('[level-auth db] openDb');
