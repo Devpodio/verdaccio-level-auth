@@ -5,12 +5,11 @@ import { resolve, isAbsolute, dirname } from 'path';
  * Level - Verdaccio auth class
  */
 export default class Level {
-  constructor(config = {}) {
-    config.logger.info('[level-auth] initialized');
+  constructor(config = {},logger) {
+    logger.info('[level-auth] initialized');
     config.file = isAbsolute(config.file) ? config.file: resolve(dirname(config.self_path),config.file);
     config.max_users = config.max_users === undefined ? Infinity : config.max_users;
-    this.logger = config.logger;
-    delete config.logger;
+    this.logger = logger;
     this.config = config;
     assert(this.config.file, 'missing "file" in config');
     this.db = new Db(this.config.file);
@@ -66,7 +65,6 @@ export default class Level {
       // TODO: support usergroups
       return cb(null,[user]);
     }).catch((err) => {
-      console.log(err.code, err.message,err.status,err.info);
       this.logger.error('[level-plugin] authenticate:',err.message);
       return cb(err);
     });
