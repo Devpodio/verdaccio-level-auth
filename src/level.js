@@ -66,7 +66,7 @@ export default class Level {
       // TODO: support usergroups
       return cb(null,[user]);
     }).catch((err) => {
-      console.log(err.code, err.message,err.status,err.info)
+      console.log(err.code, err.message,err.status,err.info);
       this.logger.error('[level-plugin] authenticate:',err.message);
       return cb(err);
     });
