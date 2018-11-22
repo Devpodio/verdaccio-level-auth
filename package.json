@@ -24,5 +24,13 @@
   },
   "dependencies": {
     "level": "4.0.0"
-  }
+  },
+  "keywords": [
+    "verdaccio",
+    "plugin",
+    "level",
+    "leveldb",
+    "auth",
+    "storage"
+  ]
 }
