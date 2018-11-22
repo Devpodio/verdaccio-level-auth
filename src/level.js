@@ -9,6 +9,8 @@ export default class Level {
     config.logger.info('[level-auth] initialized');
     config.file = isAbsolute(config.file) ? config.file: resolve(dirname(config.self_path),config.file);
     config.max_users = config.max_users === undefined ? Infinity : config.max_users;
+    this.logger = config.logger;
+    delete config.logger;
     this.config = config;
     assert(this.config.file, 'missing "file" in config');
     this.db = new Db(this.config.file);
