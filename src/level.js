@@ -85,7 +85,7 @@ export default class Level {
         return cb(err);
       }
       this.db.addUser(user, password).then(() => {
-        return cb(null);
+        return cb(null,true);
       }).catch((err) => {
         this.logger.error('[level-plugin] adduser:',err.message);
         return cb(err);
@@ -110,7 +110,7 @@ export default class Level {
         return cb(err);
       }
       this.db.addUser(user, password).then(() => {
-        return cb(null);
+        return cb(null,true);
       }).catch((err) => {
         this.logger.error('[level-plugin] changePassword:',err.message);
         return cb(err);
