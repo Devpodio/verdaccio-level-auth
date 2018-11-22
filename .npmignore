@@ -8,3 +8,5 @@ yarn.lock
 *.md
 LICENSE
 renovate.json
+test
+test.js
