@@ -1,15 +1,15 @@
 import assert from 'assert';
 import Db from './db';
-import { resolve, dirname } from 'path';
+import { resolve, isAbsolute, dirname } from 'path';
 /**
  * Level - Verdaccio auth class
  */
 export default class Level {
-  constructor(config = {}, verdaccioArgs = {}) {
-    config.file = config.file || verdaccioArgs.users_file;
+  constructor(config = {}) {
+    config.logger.info('[level-auth] initialized')
+    config.file = isAbsolute(config.file) ? config.file: resolve(dirname(config.self_path),config.file);
     config.max_users = config.max_users === undefined ? Infinity : config.max_users;
-    config.path = resolve(dirname(verdaccioArgs.self_path), config.file);
-    this.config = Object.assign({}, config, verdaccioArgs);
+    this.config = config;
     assert(this.config.file, 'missing "file" in config');
     this.db = new Db(this.config.file);
   }
