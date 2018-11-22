@@ -6,7 +6,7 @@ import { resolve, isAbsolute, dirname } from 'path';
  */
 export default class Level {
   constructor(config = {}) {
-    config.logger.info('[level-auth] initialized')
+    config.logger.info('[level-auth] initialized');
     config.file = isAbsolute(config.file) ? config.file: resolve(dirname(config.self_path),config.file);
     config.max_users = config.max_users === undefined ? Infinity : config.max_users;
     this.config = config;
