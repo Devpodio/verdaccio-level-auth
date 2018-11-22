@@ -37,19 +37,14 @@ export default class Level {
       if (user) {
         return this._genErr('username is already registered', 409);
       }
-    } else if (action === 'authenticate') {
-      verified = await this.db.verifyUser(obj.username, obj.password);
-      if (!verified) {
-        return this._genErr('unauthorized access', 401);
-      }
-    } else if (action === 'edit') {
-      verified = await this.db.verifyUser(obj.username, obj.password);
-      if (!verified) {
-        return this._genErr('unauthorized access', 401);
-      }
+    } else if (action === 'authenticate' || action === 'edit') {
       user = await this.db.getUser(obj.username);
       if (!user) {
         return this._genErr('username not found', 409);
+      }
+      verified = await this.db.verifyUser(obj.username, obj.password);
+      if (!verified) {
+        return this._genErr('unauthorized access', 401);
       }
     }
     return null;
@@ -71,7 +66,8 @@ export default class Level {
       // TODO: support usergroups
       return cb(null,[user]);
     }).catch((err) => {
-      this.config.logger.error('[level-plugin] authenticate:',err.message);
+      console.log(err.code, err.message,err.status,err.info)
+      this.logger.error('[level-plugin] authenticate:',err.message);
       return cb(err);
     });
   }
