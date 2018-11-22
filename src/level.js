@@ -25,6 +25,10 @@ export default class Level {
       return this._genErr('username and password is required', 400);
     }
     if (action === 'register') {
+      user = await this.db.getUser(obj.username);
+      if (user) {
+        return this._genErr('username is already registered', 409);
+      }
       if (this.config.max_users < 0) {
         return this._genErr('user registration disabled', 409);
       }
@@ -32,10 +36,7 @@ export default class Level {
       if (count >= this.config.max_users) {
         return this._genErr('maximum amount of users reached', 403);
       }
-      user = await this.db.getUser(obj.username);
-      if (user) {
-        return this._genErr('username is already registered', 409);
-      }
+
     } else if (action === 'authenticate' || action === 'edit') {
       user = await this.db.getUser(obj.username);
       if (!user) {
