@@ -22,7 +22,7 @@ export default class Level {
   }
   async _check(obj, action) {
     let verified, user;
-    if (obj.username, obj.password) {
+    if (!obj.username || !obj.password) {
       return this._genErr('username and password is required', 400);
     }
     if (action === 'register') {
