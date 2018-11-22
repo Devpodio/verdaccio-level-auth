@@ -12,7 +12,7 @@ export default class Level {
     this.logger = logger;
     this.config = config;
     assert(this.config.file, 'missing "file" in config');
-    this.db = new Db(this.config.file);
+    this.db = new Db(this.config.file,this.logger);
   }
   _genErr(msg, status) {
     const err = new Error(msg);
