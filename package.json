@@ -2,15 +2,16 @@
   "name": "@devpodio/verdaccio-level-auth",
   "version": "1.0.2",
   "description": "A verdaccio plugin that uses level(a LevelDB wrapper) to store and authenticate user credentials",
-  "main": "index.js",
+  "main": "lib/index.js",
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
     "lint": "eslint --fix --ext .js .",
-    "prepublish": "npm run lint",
-    "postcommit": "npm run lint"
+    "prepublish": "npm run lint && npm run build",
+    "postcommit": "rm -rf ./lib && npm run lint",
+    "build": "babel src/ --out-dir lib/"
   },
   "engines": {
     "node": ">=8"
@@ -20,6 +21,10 @@
   "license": "MIT",
   "private": false,
   "devDependencies": {
+    "@babel/cli": "7.1.5",
+    "@babel/core": "7.1.6",
+    "@babel/preset-env": "7.1.6",
+    "babel-preset-minify": "0.5.0",
     "eslint": "^5.9.0"
   },
   "dependencies": {
