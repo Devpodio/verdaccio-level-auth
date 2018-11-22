@@ -5,6 +5,6 @@ import Level from './level';
  * @param {object} config
  * @returns {object}
  */
-export default function(config, {logger}) {
+export default function(config, { logger }) {
   return new Level(config,logger);
 }
