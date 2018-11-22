@@ -4,10 +4,16 @@
   "description": "A verdaccio plugin that uses level(a LevelDB wrapper) to store and authenticate user credentials",
   "main": "index.js",
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "lint": "eslint --fix --ext .js ."
+    "lint": "eslint --fix --ext .js .",
+    "prepublish": "npm run lint",
+    "postcommit": "npm run lint"
+  },
+  "engines": {
+    "node": ">=8"
   },
   "repository": "https://github.com/Devpodio/verdaccio-level-auth.git",
   "author": "Uni Sayo <unibtc@gmail.com>",
