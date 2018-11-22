@@ -48,7 +48,7 @@ export default class Db {
     await this._closeDb();
   }
 
-  verifyUser(username,password) {
+  async verifyUser(username,password) {
     this._initDb();
     const hash = await this.db.get(username);
     await this._closeDb();

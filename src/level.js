@@ -9,13 +9,13 @@ export default class Level {
     config.file = config.file || verdaccioArgs.users_file;
     config.max_users = config.max_users === undefined ? Infinity : config.max_users;
     config.path = resolve(dirname(verdaccioArgs.self_path), config.file);
-    this.config = Object.assign({}, config, verdaccioArgs)
+    this.config = Object.assign({}, config, verdaccioArgs);
     assert(this.config.file, 'missing "file" in config');
-    this.db = new Db(this.config.file)
+    this.db = new Db(this.config.file);
   }
   _genErr(msg, status) {
     const err = new Error(msg);
-    err.status = status;s
+    err.status = status;
     return err;
   }
   async _check(obj, action) {
@@ -67,11 +67,11 @@ export default class Level {
         return cb(err);
       }
       // TODO: support usergroups
-      return cb(null,[user])
+      return cb(null,[user]);
     }).catch((err) => {
       this.config.logger.error('[level-plugin] authenticate:',err.message);
-      return cb(err)
-    })
+      return cb(err);
+    });
   }
   /**
  * adds a user
@@ -92,12 +92,12 @@ export default class Level {
         return cb(null);
       }).catch((err) => {
         this.logger.error('[level-plugin] adduser:',err.message);
-        return cb(err)
-      })
+        return cb(err);
+      });
     }).catch((err) => {
       this.logger.error('[level-plugin] adduser:',err.message);
-      return cb(err)
-    })
+      return cb(err);
+    });
   }
   /**
    * changePassword - change password for existing user.
@@ -117,11 +117,11 @@ export default class Level {
         return cb(null);
       }).catch((err) => {
         this.logger.error('[level-plugin] changePassword:',err.message);
-        return cb(err)
-      })
+        return cb(err);
+      });
     }).catch((err) => {
       this.logger.error('[level-plugin] changePassword:',err.message);
-      return cb(err)
-    })
+      return cb(err);
+    });
   }
 }
